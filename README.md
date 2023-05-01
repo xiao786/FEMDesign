@@ -9,5 +9,5 @@ To use this code, please install NumPy and Matplotlib.
 please contact me via email at dasyxocy@gmail.com.
 
 ---
-Copyright © 2023 SYX. All rights reserved.
+Copyright © 2023 syx. All rights reserved.
 
