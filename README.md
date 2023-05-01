@@ -1,12 +1,13 @@
 # FEMDesign
 
-# Installation
+## Installation
 To use this code, please install NumPy and Matplotlib.
 
-#Clone the repository.
+## Clone the repository
 
-#Contact
+## Contact
 please contact me via email at dasyxocy@gmail.com.
+
 ---
 Copyright © 2023 SYX. All rights reserved.
 
