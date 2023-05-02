@@ -1,31 +1,30 @@
 import numpy as np
-from FEMToolbox.mesh.Mesh1D import create_intercval
-from FEMToolbox.fe.Function import udFun,Fun
+from FEMToolbox.mesh.Mesh1D import create_intercval_00
+from FEMToolbox.fe.Function import udFun,Fun,plot1D
 from FEMToolbox.fe.GaussIntegral import gauss_integral_1D
 
 n=10
-msh, basisfun, funspace = create_intercval(0, 1, n)
-f=udFun(lambda x:-x)
-
+msh, basisfun, funspace = create_intercval_00(0, 1, n)
+f=udFun(msh,lambda x:-x)
+n-=1
 A=np.zeros((n,n))
 F=np.zeros(n)
 
+#msh.plot(basisfun,1000)
+
+
 for i in range(n):
     for j in range(n):
-        a,b=gauss_integral_1D(basisfun[i], basisfun[j]) , gauss_integral_1D(basisfun[i].grad(), basisfun[j].grad())
-        #print(a,b)
-        A[i][j]=a-b
+        A[i][j]=gauss_integral_1D(basisfun[i], basisfun[j]) - gauss_integral_1D(basisfun[i].grad(), basisfun[j].grad())
 
-print(gauss_integral_1D(basisfun[0].grad(),basisfun[0].grad()))
 for i in range(n):
     F[i]=gauss_integral_1D(basisfun[i],f)
 
-print(A,F)
-
-#msh.plot(basisfun,1000)
 coef=np.linalg.solve(A,F)
-#print(coef)
 
-num_sol=Fun(funspace,coef)
+num_fun=Fun(funspace,coef)
 
-print(num_sol.get_value([0.25]))
+#print(num_sol.get_value([3/4]))
+
+ana_fun=udFun(msh,lambda x:np.sin(x)/np.sin(1)-x)
+plot1D(1000,num_fun,ana_fun)

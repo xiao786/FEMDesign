@@ -1,5 +1,6 @@
+import typing
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 class BasisFun:
     def __init__(self, offset, cellfun):
@@ -32,8 +33,8 @@ class BasisFun:
 
 
 class FunctionSpace:
-    def __init__(self, domain):
-        self.n = domain.size
+    def __init__(self, domain,n):
+        self.n =n # n*basisfun
         self.dim = 1
         self.basisfun_list = []
         self.domain = domain
@@ -58,8 +59,7 @@ class Fun(FunctionSpace):
     '''
 
     def __init__(self, fs, coeflist):
-        super().__init__(fs.domain)
-        self.n = fs.domain.size
+        super().__init__(fs.domain,fs.n)
         self.basicfun_list = fs.basisfun_list
         self.coef = coeflist
         self.return_grad = False
@@ -94,7 +94,8 @@ class Fun(FunctionSpace):
         self.return_grad = False
 
 class udFun:
-    def __init__(self,fun):
+    def __init__(self,domian,fun):
+        self.domain=domian
         self.fun=fun
         self.return_grad=False
 
@@ -114,3 +115,20 @@ class udFun:
 
     def ungrad(self):
         self.return_grad=False
+
+
+def plot1D(t,*funlist:typing.Tuple[Fun,udFun]):
+    plt.figure()
+    plt.xlabel("x")
+    plt.ylabel("y")
+    for i in range(len(funlist)):
+        fun=funlist[i]
+        domain=fun.domain
+        x = np.linspace(domain.xmin, domain.xmax, t)
+        y = np.zeros(t)
+        for j in range(len(x)):
+            y[j]=fun.get_value([x[j]])
+        plt.plot(x, y,label='function'+str(i))
+        plt.legend()
+    plt.show()
+
