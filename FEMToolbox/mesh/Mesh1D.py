@@ -70,3 +70,24 @@ def create_intercval(xmin, xmax, n, order=1, method='default'):
         basisfun_list.append(Fun(fun_sp, coef))
 
     return msh, basisfun_list, fun_sp
+
+
+def create_intercval2(xmin, xmax, n, order=1, method='default'):
+    msh = Interval(xmin, xmax, n)
+    fun_sp = FunctionSpace(msh)
+    dx = msh.length / n
+    if method == 'default':
+        if order == 1:
+            for i in range(n - 1):
+                offset = msh.nodes[i+1]
+                fun_sp.append_basisfun([offset], msh.cells[i], lambda x: 1 + x / dx, msh.cells[i + 1],
+                                       lambda x: 1 - x / dx)
+            fun_sp.append_basisfun([msh.nodes[-1]], msh.cells[n - 1], lambda x: 1 + x / dx)
+
+    basisfun_list = []
+    for i in range(n):
+        coef = np.zeros(n)
+        coef[i] = 1
+        basisfun_list.append(Fun(fun_sp, coef))
+
+    return msh, basisfun_list, fun_sp
