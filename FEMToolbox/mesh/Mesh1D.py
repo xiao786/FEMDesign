@@ -51,7 +51,7 @@ class Interval:
         plt.show()
 
 
-def create_intercval_01(xmin, xmax, size, order=1, method='default'):
+def create_intercval_val0grad0(xmin, xmax, size, order=1, method='default'):
     n=size
     msh = Interval(xmin, xmax, size)
     fun_sp = FunctionSpace(msh,n)
@@ -62,17 +62,17 @@ def create_intercval_01(xmin, xmax, size, order=1, method='default'):
                 offset = msh.nodes[i+1]
                 fun_sp.append_basisfun([offset], msh.cells[i], lambda x: 1 + x / dx, msh.cells[i + 1],
                                        lambda x: 1 - x / dx)
-            fun_sp.append_basisfun([msh.nodes[-1]], msh.cells[size - 1], lambda x: 1 + x / dx)
-    basisfun_list = []
+            fun_sp.append_basisfun([msh.nodes[-1]], msh.cells[n - 1], lambda x: 1 + x / dx)
+    basisfun = []
     for i in range(n):
         coef = np.zeros(n)
         coef[i] = 1
-        basisfun_list.append(Fun(fun_sp, coef))
+        basisfun.append(Fun(fun_sp, coef))
 
-    return msh, basisfun_list, fun_sp
+    return msh, basisfun, fun_sp
 
 
-def create_intercval_00(xmin, xmax, size, order=1, method='default'):
+def create_intercval_val0val0(xmin, xmax, size, order=1, method='default'):
     n=size-1
     msh = Interval(xmin, xmax, size)
     fun_sp = FunctionSpace(msh,n)
@@ -84,10 +84,32 @@ def create_intercval_00(xmin, xmax, size, order=1, method='default'):
                 offset = msh.nodes[i+1]
                 fun_sp.append_basisfun([offset], msh.cells[i], lambda x: 1 + x / dx, msh.cells[i + 1],
                                        lambda x: 1 - x / dx)
-    basisfun_list = []
+    basisfun = []
     for i in range(n):
         coef = np.zeros(n)
         coef[i] = 1
-        basisfun_list.append(Fun(fun_sp, coef))
+        basisfun.append(Fun(fun_sp, coef))
 
-    return msh, basisfun_list, fun_sp
+    return msh, basisfun, fun_sp
+
+
+def create_intercval_grad0grad0(xmin, xmax, size, order=1, method='default'):
+    n=size+1
+    msh = Interval(xmin, xmax, size)
+    fun_sp = FunctionSpace(msh,n)
+    dx = msh.length / size
+    if method == 'default':
+        if order == 1:
+            fun_sp.append_basisfun([msh.nodes[0]], msh.cells[0], lambda x: 1 - x / dx)
+            for i in range(n-2):
+                offset = msh.nodes[i+1]
+                fun_sp.append_basisfun([offset], msh.cells[i], lambda x: 1 + x / dx, msh.cells[i + 1],
+                                       lambda x: 1 - x / dx)
+            fun_sp.append_basisfun([msh.nodes[-1]], msh.cells[n - 2], lambda x: 1 + x / dx)
+    basisfun = []
+    for i in range(n):
+        coef = np.zeros(n)
+        coef[i] = 1
+        basisfun.append(Fun(fun_sp, coef))
+
+    return msh, basisfun, fun_sp

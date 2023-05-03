@@ -22,6 +22,11 @@ def gauss_rule(dim, gauss_n):
             gauss_point = [-np.sqrt((3.0 + t) / 7.0), -np.sqrt((3.0 - t) / 7.0), np.sqrt((3.0 - t) / 7.0),
                            np.sqrt((3.0 + t) / 7.0)]
             weight = [0.5 - w, 0.5 + w, 0.5 + w, 0.5 - w]
+        elif gauss_n == 5:
+            t = 2 * np.sqrt(10 / 7)
+            w = 13 * np.sqrt(70)
+            gauss_point = [-np.sqrt(5.0 + t) / 3.0, -np.sqrt(5.0 - t) / 3.0, 0, np.sqrt(5.0 - t) / 3.0, np.sqrt(5.0 + t) / 3.0]
+            weight = [(322 - w) / 900, (322 + w) / 900, 0, (322 + w) / 900, (322 - w) / 900]
     return gauss_point, weight
 
 
@@ -30,20 +35,32 @@ def gauss_intergral(n, *funlist):
     pass
 
 
-def gauss_integral_1D(*funlist:typing.Tuple[Fun,udFun],gauss_n=4):
+def gauss_integral_1D(*funlist: typing.Tuple[Fun, udFun], gauss_n=4):
     val = 0.0
+    '''
     if len(funlist) == 1:
         gp, w = gauss_rule(1, gauss_n)
-        for i in range(len(funlist[0].basicfun_list)):
+        for i in range(len(funlist[0].basisfun_list)):
             if funlist[0].coef[i] == 0:
                 continue
-            bf = funlist[0].basicfun_list[i]
+            bf = funlist[0].basisfun_list[i]
             for cell in bf.cell_fun_map.keys():
                 a, b = cell.node_range[0][0], cell.node_range[1][0]
                 for j in range(gauss_n):
                     point = ((b - a) / 2) * gp[j] + (a + b) / 2
                     fun_val = bf.get_value([point])
                     val += (b - a) / 2 * w[j] * fun_val * funlist[0].coef[i]
+    '''
+    if len(funlist) == 1:
+        for cell in funlist[0].domain.cells:
+            a, b = cell.node_range[0][0], cell.node_range[1][0]
+            gp, w = gauss_rule(1, gauss_n)
+            for j in range(gauss_n):
+                point = ((b - a) / 2) * gp[j] + (a + b) / 2
+                if not funlist[0].return_grad:
+                    fun_val = funlist[0].get_value([point])
+                    # fun_val = 0 if (f1_val is None or f2_val is None) else f1_val * f2_val
+                    val += (b - a) / 2 * w[j] * fun_val
 
     elif len(funlist) == 2:
         f1, f2 = funlist[0], funlist[1]

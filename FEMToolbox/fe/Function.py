@@ -57,30 +57,29 @@ class Fun(FunctionSpace):
     '''
     sum(i=0:n) coef[i]*BasisFun[i].getvalue(variables)
     '''
-
     def __init__(self, fs, coeflist):
         super().__init__(fs.domain,fs.n)
-        self.basicfun_list = fs.basisfun_list
+        self.basisfun_list = fs.basisfun_list
         self.coef = coeflist
         self.return_grad = False
 
-    def get_value(self, coords):
+    def get_value(self, coords) -> float:
         val = 0.0
         for i in range(self.n):
             if self.coef[i] == 0:
                 continue
-            fun_val = self.basicfun_list[i].get_value(coords)
+            fun_val = self.basisfun_list[i].get_value(coords)
             if fun_val is None:
                 fun_val = 0.0
             val += self.coef[i] * fun_val
         return val
 
-    def get_grad(self, coords):
+    def get_grad(self, coords) -> np.ndarray:
         grad = 0.0
         for i in range(self.n):
             if self.coef[i] == 0:
                 continue
-            fun_grad = self.basicfun_list[i].get_grad(coords)
+            fun_grad = self.basisfun_list[i].get_grad(coords)
             if fun_grad is None:
                 fun_grad = np.array([0.0])
             grad += self.coef[i] * fun_grad.item(0)
@@ -132,3 +131,17 @@ def plot1D(t,*funlist:typing.Tuple[Fun,udFun]):
         plt.legend()
     plt.show()
 
+
+def plotgap(t,*funlist:typing.Tuple[Fun,udFun]):
+    plt.figure()
+    plt.xlabel("x")
+    plt.ylabel("y")
+    f1,f2=funlist[0],funlist[1]
+    domain=f1.domain
+    x = np.linspace(domain.xmin, domain.xmax, t)
+    y = np.zeros(t)
+    for j in range(len(x)):
+        y[j]=f1.get_value([x[j]])-f2.get_value([x[j]])
+    plt.plot(x, y)
+    #plt.legend()
+    plt.show()
