@@ -19,7 +19,7 @@ class Cell:
 
     def in_cell(self, coords) -> bool:
         for i in range(self.dim):
-            if coords[i] < self.node_range[0][i]-1e-15 or coords[i] > self.node_range[1][i]+1e-15:
+            if coords[i] < self.node_range[0][i] - 1e-16 or coords[i] > self.node_range[1][i] + 1e-16:
                 return False
         return True
 
