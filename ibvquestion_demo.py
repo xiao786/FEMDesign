@@ -1,7 +1,7 @@
 import numpy as np
-from FEMToolbox.mesh.Mesh1D import create_intercval_grad0grad0
-from FEMToolbox.fe.GaussIntegral import gauss_integral_1D, quick_gauss_integral_1D, update_mem_matrix
-from FEMToolbox.fe.Function import Fun, udFun, plot1D
+from SlowFEM.mesh.Mesh1D import create_intercval_grad0grad0
+from SlowFEM.fe.GaussIntegral import gauss_integral_1D, quick_gauss_integral_1D, update_mem_matrix
+from SlowFEM.fe.Function import Fun, udFun, plot1D
 import time
 
 start = time.time()

@@ -1,6 +1,6 @@
 import numpy as np
-from FEMToolbox.mesh.MeshCell import Cell
-from FEMToolbox.fe.Function import FunctionSpace, Fun
+from SlowFEM.mesh.MeshCell import Cell
+from SlowFEM.fe.Function import FunctionSpace, Fun
 import matplotlib.pyplot as plt
 
 

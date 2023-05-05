@@ -1,7 +1,7 @@
 import typing
 
-from FEMToolbox.fe.Function import Fun, udFun
-from FEMToolbox.fe.GaussRule import gauss_rule
+from SlowFEM.fe.Function import Fun, udFun
+from SlowFEM.fe.GaussRule import gauss_rule
 import numpy as np
 
 GP, W = [0], [0]

@@ -1,7 +1,7 @@
 import typing
 import numpy as np
 import matplotlib.pyplot as plt
-from FEMToolbox.fe.GaussRule import gauss_rule
+from SlowFEM.fe.GaussRule import gauss_rule
 
 
 class BasisFun:

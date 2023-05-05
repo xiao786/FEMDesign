@@ -1,7 +1,7 @@
 import numpy as np
-from FEMToolbox.mesh.Mesh1D import create_intercval_val0val0
-from FEMToolbox.fe.Function import udFun, Fun, plot1D
-from FEMToolbox.fe.GaussIntegral import gauss_integral_1D, update_mem_matrix, quick_gauss_integral_1D
+from SlowFEM.mesh.Mesh1D import create_intercval_val0val0
+from SlowFEM.fe.Function import udFun, Fun, plot1D
+from SlowFEM.fe.GaussIntegral import gauss_integral_1D, update_mem_matrix, quick_gauss_integral_1D
 
 size = 100
 msh, basisfun, funspace = create_intercval_val0val0(0, 1, size)
