@@ -14,6 +14,7 @@ class Interval:
         self.nodes = np.zeros(size + 1)
         self.create_cells()
         self.dim = 1
+        self.basisfun_list=[]
 
     def create_cells(self):
         dx = self.length / self.size
@@ -34,16 +35,16 @@ class Interval:
         for i in range(len(self.cells)):
             print("elem", self.cells[i].no, ":", self.cells[i].__str__())
 
-    def plot(self, basisfun_list, t):
+    def plot(self, t = 1000):
         x = np.linspace(self.xmin, self.xmax, t)
         y = np.zeros(t)
         plt.figure()
         plt.xlabel("x")
         plt.ylabel("y")
-        for i in range(len(basisfun_list)):
+        for i in range(len(self.basisfun_list)):
             j = 0
             for xi in x:
-                val = basisfun_list[i].get_value([xi])
+                val = self.basisfun_list[i].get_value([xi])
                 y[j] = val if val != 0 else None
                 j = j + 1
             plt.plot(x, y, label='BasisFun' + str(i + 1))
@@ -68,6 +69,7 @@ def create_intercval_val0grad0(xmin, xmax, size, order=1, method='default'):
         coef = np.zeros(n)
         coef[i] = 1
         basisfun.append(Fun(fun_sp, coef, i))
+    msh.basisfun_list=basisfun
 
     return msh, basisfun, fun_sp
 
@@ -89,6 +91,7 @@ def create_intercval_val0val0(xmin, xmax, size, order=1, method='default'):
         coef = np.zeros(n)
         coef[i] = 1
         basisfun.append(Fun(fun_sp, coef, i))
+    msh.basisfun_list = basisfun
 
     return msh, basisfun, fun_sp
 
@@ -111,5 +114,6 @@ def create_intercval_grad0grad0(xmin, xmax, size, order=1, method='default'):
         coef = np.zeros(n)
         coef[i] = 1
         basisfun.append(Fun(fun_sp, coef, i))
+    msh.basisfun_list = basisfun
 
     return msh, basisfun, fun_sp

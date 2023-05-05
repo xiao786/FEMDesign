@@ -1,17 +1,18 @@
 import numpy as np
 from FEMToolbox.mesh.Mesh1D import create_intercval_val0val0
 from FEMToolbox.fe.Function import udFun, Fun, plot1D
-from FEMToolbox.fe.GaussIntegral import gauss_integral_1D, update_mem_matrix, quick_gauss_integral_1D, PrintMem
+from FEMToolbox.fe.GaussIntegral import gauss_integral_1D, update_mem_matrix, quick_gauss_integral_1D
 
-size = 10
+size = 100
 msh, basisfun, funspace = create_intercval_val0val0(0, 1, size)
 f = udFun(msh, lambda x: -x)
+#msh.plot()
+
 
 n = funspace.n
 A = np.zeros((n, n))
 F = np.zeros(n)
 
-update_mem_matrix(n)
 
 for i in range(n):
     for j in range(n):
@@ -34,4 +35,3 @@ print(L2_error)
 
 plot1D(1000, num_fun, ana_fun)
 
-msh.plot(basisfun, 1000)

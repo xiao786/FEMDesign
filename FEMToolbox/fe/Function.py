@@ -51,8 +51,6 @@ class FunctionSpace:
         self.basisfun_list.append(bf)
         for i in range(len(cellfun)):
             if i & 1:
-                self.global_cellfun_map[cellfun[i - 1]] = bf
-
                 a, b = cellfun[i - 1].node_range[0][0], cellfun[i - 1].node_range[1][0]
                 V, G = [index], [index]
                 for j in range(1, 6):
@@ -75,6 +73,7 @@ class Fun(FunctionSpace):
 
     def __init__(self, fs, coef, funid=-1):
         super().__init__(fs.domain, fs.n)
+        self.coef=[]
         self.basisfun_list = fs.basisfun_list
         self.return_grad = False
         self.CBGV = fs.CBGV

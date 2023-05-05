@@ -11,7 +11,7 @@ for i in range(1, 6):
     W.append(w)
 
 
-def gauss_integral_1D(gauss_n=4, *funlist: typing.Tuple[Fun, udFun]):
+def gauss_integral_1D(gauss_n, *funlist: typing.Tuple[Fun, udFun]):
     val = 0.0
     if len(funlist) == 1:
         for cell in funlist[0].domain.cells:
@@ -21,7 +21,6 @@ def gauss_integral_1D(gauss_n=4, *funlist: typing.Tuple[Fun, udFun]):
                 point = ((b - a) / 2) * gp[j] + (a + b) / 2
                 if not funlist[0].return_grad:
                     fun_val = funlist[0].get_value([point])
-                    # fun_val = 0 if (f1_val is None or f2_val is None) else f1_val * f2_val
                     val += (b - a) / 2 * w[j] * fun_val
 
     elif len(funlist) == 2:
@@ -54,7 +53,10 @@ def update_mem_matrix(n):
     MEM_ff.resize(n, n, 4)
 
 
-def quick_gauss_integral_1D(gauss_n=4, *funlist: typing.Tuple[Fun]):
+update_mem_matrix(1000)
+
+
+def quick_gauss_integral_1D(gauss_n, *funlist: typing.Tuple[Fun]):
     val = 0.0
     if len(funlist) == 1:
         f: Fun = funlist[0]
@@ -67,6 +69,7 @@ def quick_gauss_integral_1D(gauss_n=4, *funlist: typing.Tuple[Fun]):
                 # [bf_gval[0]:no of bf which sit in domian 'cell'
                 if f.coef[bf_gval[0]] == 0:
                     continue
+
                 for e in range(gauss_n):
                     val += (b - a) / 2 * W[gauss_n][e] * f.coef[bf_gval[0]] * bf_gval[gauss_n][e]
 
